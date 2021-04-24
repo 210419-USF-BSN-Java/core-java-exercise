@@ -10,6 +10,7 @@ public class EvaluationService {
 	 * 1. Without using the StringBuilder or StringBuffer class, write a method that
 	 * reverses a String. Example: reverse("example"); -> "elpmaxe"
 	 *  TEST BRANCH
+	 * TESTING 2
 	 * @param string
 	 * @return
 	 */
