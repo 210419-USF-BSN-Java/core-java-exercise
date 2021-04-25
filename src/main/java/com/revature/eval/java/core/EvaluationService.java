@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,13 +10,18 @@ public class EvaluationService {
 	/**
 	 * 1. Without using the StringBuilder or StringBuffer class, write a method that
 	 * reverses a String. Example: reverse("example"); -> "elpmaxe"
-	 *  TEST BRANCH
+	 * 
 	 * @param string
 	 * @return
 	 */
 	public String reverse(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		char[] charArray = string.toCharArray();
+		String reversedString = "";
+		for (int i = charArray.length - 1; i >= 0; i--) {
+			reversedString = reversedString.concat(String.valueOf(charArray[i]));
+		}
+
+		return reversedString;
 	}
 
 	/**
@@ -27,8 +33,12 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		phrase = phrase.replaceAll("[^a-zA-Z ]", " ");
+		String[] stringArray = phrase.split("[ ]{1,}");
+		StringBuilder sb = new StringBuilder();
+		for (String s : stringArray)
+			sb.append(String.valueOf(s.charAt(0)).toUpperCase());
+		return sb.toString();
 	}
 
 	/**
@@ -81,18 +91,18 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+
+			return (sideOne == sideTwo && sideOne == sideThree && sideTwo == sideThree) ? true : false;
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+
+			return (sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree) ? true : false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			return (isIsosceles() || isEquilateral()) ? false : true;
 		}
 
 	}
@@ -113,8 +123,27 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		char[] charArray = string.toUpperCase().toCharArray();
+		int score = 0;
+		for (char c : charArray) {
+			if (String.valueOf(c).matches("[AEIOULNRST]")) {
+				score++;
+			} else if (String.valueOf(c).matches("[DG]")) {
+				score += 2;
+			} else if (String.valueOf(c).matches("[BCMP]")) {
+				score += 3;
+			} else if (String.valueOf(c).matches("[FHVWY]")) {
+				score += 4;
+			} else if (String.valueOf(c).matches("[K]")) {
+				score += 5;
+			} else if (String.valueOf(c).matches("[JX]")) {
+				score += 8;
+			} else if (String.valueOf(c).matches("[QZ]")) {
+				score += 10;
+			}
+		}
+
+		return score;
 	}
 
 	/**
@@ -148,9 +177,15 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
+		string = string.replaceAll("[^0-9]", "");
+		if (string.charAt(0) == '1') {
+			string = string.substring(1);
+		}
+		if (string.length() != 10) {
+			throw new IllegalArgumentException("not valid number");
+		}
+		return string;
 	}
 
 	/**
@@ -263,8 +298,15 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isArmstrongNumber(int input) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		char[] inputCharArray = String.valueOf(input).toCharArray();
+		int length = inputCharArray.length;
+
+		int finalNumber = 0;
+		for (char c : inputCharArray) {
+			finalNumber += Math.pow(Character.digit(c, 10), length);
+		}
+
+		return (finalNumber == input) ? true : false;
 	}
 
 	/**
@@ -278,8 +320,23 @@ public class EvaluationService {
 	 * @return
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> primeList = new ArrayList<>();
+		for (long i = 2; i <= l; i++) {
+			int primeNumberFactor = 0;
+			for (long j = 1; j <= i; j++) {
+				if (i % j == 0) {
+					primeNumberFactor++;
+				}
+			}
+			if (primeNumberFactor == 2) {
+				while (l % i == 0) {
+					l /= i;
+					primeList.add(i);
+				}
+			}
+
+		}
+		return primeList;
 	}
 
 	/**
@@ -335,9 +392,30 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
-	public int calculateNthPrime(int i) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+	public int calculateNthPrime(int i) throws IllegalArgumentException {
+		if(i <= 0) {
+			throw new IllegalArgumentException("Enter an number greater than 0");
+		}
+		int number = 2;
+		int primeNumberFactor;
+		;
+		int nthPrimeNumber = 0;
+		do {
+			primeNumberFactor = 0;
+			for (int j = 2; j <= number; j++) {
+				if (number % j == 0) {
+					primeNumberFactor++;
+				}
+			}
+			if (primeNumberFactor == 1) {
+				nthPrimeNumber = number;
+				i--;
+			}
+			number++;
+
+		} while (i > 0);
+
+		return nthPrimeNumber;
 	}
 
 	/**
